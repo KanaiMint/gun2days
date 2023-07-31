@@ -6,7 +6,7 @@ using UnityEngine.UIElements;
 public class particleScript : MonoBehaviour
 {
    public Vector3 vel;
-   public float lifetime=1.0f;
+   public float lifetime=0.5f;
     // Start is called before the first frame update
     void Start()
     {
@@ -18,7 +18,7 @@ public class particleScript : MonoBehaviour
     {
         transform.position += new Vector3(vel.x, vel.y, vel.z)*10*Time.deltaTime;
         lifetime-=Time.deltaTime;
-        if(lifetime < 1.0f)Destroy(gameObject);
+        if (lifetime < 0.0f) { Destroy(gameObject); };
     }
    
 }

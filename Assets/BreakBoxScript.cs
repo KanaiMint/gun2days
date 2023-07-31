@@ -6,7 +6,8 @@ using UnityEngine;
 public class BreakBoxScript : MonoBehaviour
 {
 
-    int HP = 1;
+    int HP = 2;
+    public GameObject Zandan;
 
     // Start is called before the first frame update
     void Start()
@@ -21,6 +22,9 @@ public class BreakBoxScript : MonoBehaviour
         if (HP <= 0)
         {
             Destroy(gameObject);
+            GameObject zandan;
+            zandan = Instantiate(Zandan, transform.position, Quaternion.identity);
+            zandan.transform.parent = transform.parent;
         }
     }
     private void OnTriggerEnter2D(Collider2D collision)

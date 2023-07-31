@@ -1,25 +1,99 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
+using static UnityEngine.ParticleSystem;
 
 public class BossScript : MonoBehaviour
 {
     private Camera mainCamera;
     public bool isOnCamera = false;
+    public GameObject BreakBox;
+    public GameObject Enemy;
+    public float Xpos=2.0f;
+    bool Isreturn = false;
+    int HP=20;
+    const int MaxHP = 20;
+    const float KAttackTime = 7.0f;
+    float AttackTime = 2.0f;
+    public int Rand;
+    public SpriteRenderer spriteRenderer;
+    float damagedtime = 0.0f;
+    public CameraScript cameraScript;
+    public Slider BosHpBar;
     // Start is called before the first frame update
     void Start()
     {
         mainCamera = Camera.main;
+        BosHpBar.value = 1;
+        HP = MaxHP;
+        BosHpBar.gameObject.SetActive(false);
     }
 
     // Update is called once per frame
     void Update()
     {
-        if(InCamera())
+        if (HP <= 0)
         {
-            transform.position += new Vector3(0, 1, 0)*Time.deltaTime;
+            cameraScript.IsGameClear = true;
+            gameObject.SetActive(false);
+        }
+        else
+        {
+            BosHpBar.value = (float)HP / (float)MaxHP;
+            if (damagedtime > 0.0f)
+            {
+                spriteRenderer.color = Color.red;
+                damagedtime -= Time.deltaTime;
+            }
+            else { spriteRenderer.color = Color.white; }
 
-            
+            if (InCamera())
+            {
+                BosHpBar.gameObject.SetActive(true);
+                transform.position += new Vector3(0, 1, 0) * Time.deltaTime;
+                if (Isreturn)
+                {
+                    transform.position += new Vector3(Xpos, 0, 0) * Time.deltaTime;
+                    if (transform.position.x > 7.0f)
+                    {
+                        Isreturn = false;
+                    }
+                }
+                if (!Isreturn)
+                {
+                    transform.position += new Vector3(-Xpos, 0, 0) * Time.deltaTime;
+                    if (transform.position.x < -7.0f)
+                    {
+                        Isreturn = true;
+                    }
+                }
+                Rand = Random.Range(0, 2);
+                if (AttackTime <= 0)
+                {
+
+                    if (Rand == 0)
+                    {
+                        GameObject Breakbox;
+                        Breakbox = Instantiate(BreakBox, transform.position, Quaternion.identity);
+                        Breakbox.transform.parent = transform.parent;
+                        AttackTime = 0.5f;
+                    }
+                    if (Rand == 1)
+                    {
+                        GameObject enemy;
+                        enemy = Instantiate(Enemy, transform.position, Quaternion.identity);
+                        enemy.transform.parent = transform.parent;
+                        AttackTime = KAttackTime;
+                    }
+                }
+                AttackTime -= Time.deltaTime;
+
+            }
+            if (HP <= 0)
+            {
+                gameObject.SetActive(false);
+            }
         }
     }
 
@@ -30,7 +104,7 @@ public class BossScript : MonoBehaviour
 
         // Viewportç¿ïWÇ™ÉJÉÅÉâÇÃîÕàÕì‡Ç©Ç«Ç§Ç©ÇîªíË
         bool isInCamera = viewportPosition.x >= 0f && viewportPosition.x <= 1f &&
-                         viewportPosition.y >= 0f && viewportPosition.y <= 0.95f &&
+                         viewportPosition.y >= 0f && viewportPosition.y <= 0.9f &&
                          viewportPosition.z > 0f;
 
         // ÉJÉÅÉâÇ…âfÇ¡ÇƒÇ¢ÇÈèÍçáÇÃèàóù
@@ -47,4 +121,16 @@ public class BossScript : MonoBehaviour
 
         return isInCamera;
     }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+       
+        if (collision.CompareTag("bullet"))
+        {
+            HP -= 1;
+            damagedtime = 0.2f;
+            Destroy(collision.gameObject);
+        }
+    }
+    
 }

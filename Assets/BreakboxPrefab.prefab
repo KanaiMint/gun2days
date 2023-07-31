@@ -125,6 +125,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: aa664e976d3958b4796f7993c6ecc5b9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Zandan: {fileID: 7088800266896018281, guid: 36c005f95045cca4d87a3f16e1af45e7, type: 3}
 --- !u!50 &-3221042624190338184
 Rigidbody2D:
   serializedVersion: 4

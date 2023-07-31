@@ -7,7 +7,7 @@ public class EnemyScript : MonoBehaviour
 {
     public GameObject bullet;
     private float ShootCoolTime = 0.1f;
-    const float KShootCoolTime = 1.5f;
+    const float KShootCoolTime = 2.0f;
     SpriteRenderer spriteRenderer;
     float damagedtime = 0.0f;
     private int HP = 3;
@@ -15,6 +15,8 @@ public class EnemyScript : MonoBehaviour
     bool isInCamera;
     private Camera mainCamera;
     public bool isOnCamera = false;
+    public AudioSource audioSource;
+    public AudioClip sounddamage;
     // Start is called before the first frame update
     void Start()
     {
@@ -35,6 +37,7 @@ public class EnemyScript : MonoBehaviour
                 bullet_.transform.position = transform.position;
                 bullet_.transform.parent = transform.parent;
                 ShootCoolTime = KShootCoolTime;
+                audioSource.Play();
             }
             if (damagedtime > 0.0f)
             {
@@ -89,7 +92,7 @@ public class EnemyScript : MonoBehaviour
             HP -= 1;
             Destroy(collision.gameObject);
             damagedtime = 0.1f;
-
+            audioSource.PlayOneShot(sounddamage);
             for (int i = 0; i <= 10; i++)
             {
                 GameObject particle_;

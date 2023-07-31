@@ -2,73 +2,125 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PlayerScript : MonoBehaviour
 {
-    public float MaxHP=10;
-    public float HP=10;
+    public float MaxHP = 10;
+    public float HP = 10;
 
     public GameObject bullet;
     float ShootColltime = 0.3f;
-    
-   const float KShootColltime = 0.3f;
+
+    const float KShootColltime = 0.3f;
     public SpriteRenderer spriteRenderer;
     float ChargeTime = 0.0f;
     const float KChargeTime = 0.3f;
     private Vector3 originalChildScale;
+
+    public TextMeshProUGUI hpText;
+    public SpriteRenderer HPsprite;
+    public SpriteRenderer Zandansprite;
+    public GameObject particle;
+    int time;
+    public CameraScript cameraScript;
+    public AudioSource audioSource;
+    public AudioClip audioClip;
+    private Camera mainCamera;
+    public Rigidbody2D rb;
+    float damagedtime = 0.0f;
+    public float MoveSpeed;
     // Start is called before the first frame update
     void Start()
     {
-       spriteRenderer=GetComponent<SpriteRenderer>();
+        // spriteRenderer=GetComponent<SpriteRenderer>();
         // 子オブジェクトの元のスケールを保存
         originalChildScale = transform.GetChild(0).localScale;
+        mainCamera = Camera.main;
+        audioSource = GetComponent<AudioSource>();
+        rb = GetComponent<Rigidbody2D>();
     }
 
     // Update is called once per frame
     void Update()
     {
-        if(Input.GetKey(KeyCode.A)) 
+        if (HP <= 0 || transform.position.y < mainCamera.transform.position.y - 10.0f) 
         {
-            transform.position += new Vector3(-5, 0, 0) * Time.deltaTime;
+            cameraScript.IsGameOver = true;
         }
-        if (Input.GetKey(KeyCode.D))
+        else
         {
-            transform.position += new Vector3(5, 0, 0) * Time.deltaTime;
-        }
-        if (Input.GetKey(KeyCode.W))
-        {
-            transform.position += new Vector3(0, 5, 0) * Time.deltaTime;
-        }
-        if (Input.GetKey(KeyCode.S))
-        {
-            transform.position += new Vector3(0, -5, 0) * Time.deltaTime;
-        }
-        if (Input.GetKey(KeyCode.J)&&ShootColltime<=0.0f&&HP>1)
-        {
-            HP -= 1;
-            GameObject bullet_;
-            bullet_=Instantiate(bullet);
-            bullet_.transform.position = transform.position;
-            bullet_.transform.parent = transform.parent;
-            ShootColltime = KShootColltime;
-        }else
-        if (Input.GetKey(KeyCode.K)&&!Input.GetKey(KeyCode.J))
-        {
-            ChargeTime += Time.deltaTime;
-        }
-        if ((ChargeTime > KChargeTime)&&HP<=MaxHP)
-        {
-            HP += 1;
-            ChargeTime = 0.0f;
-        }
-        ShootColltime-=Time.deltaTime;
+            if (damagedtime > 0.0f)
+            {
+                spriteRenderer.color = Color.red;
+                damagedtime -= Time.deltaTime;
+            }
+            else { spriteRenderer.color = Color.white; }
 
-        float spriteScalX = (HP / 10);
+            if (Input.GetKey(KeyCode.A))
+            {
+                transform.position += new Vector3(-MoveSpeed, 0, 0) * Time.deltaTime;
+                //rb.velocity += new Vector2(-5, 0) * Time.deltaTime;
+            }
+            if (Input.GetKey(KeyCode.D))
+            {
+                transform.position += new Vector3(MoveSpeed, 0, 0) * Time.deltaTime;
+                //rb.velocity += new Vector2(5, 0) * Time.deltaTime;
+            }
+            if (Input.GetKey(KeyCode.W))
+            {
+                transform.position += new Vector3(0, MoveSpeed, 0) * Time.deltaTime;
+                //rb.velocity += new Vector2(0, 5) * Time.deltaTime;
+            }
+            if (Input.GetKey(KeyCode.S))
+            {
+                transform.position += new Vector3(0, -MoveSpeed, 0) * Time.deltaTime;
+                //rb.velocity +=new Vector2(0, -5) * Time.deltaTime;
+            }
+            if (Input.GetKey(KeyCode.J) && ShootColltime <= 0.0f && HP > 1)
+            {
+                HP -= 1;
+                GameObject bullet_;
+                bullet_ = Instantiate(bullet);
+                bullet_.transform.position = transform.position;
+                bullet_.transform.parent = transform.parent;
+                ShootColltime = KShootColltime;
+                audioSource.Play();
+            }
+            else
+            if (Input.GetKey(KeyCode.K) && !Input.GetKey(KeyCode.J))
+            {
 
-        transform.localScale = new Vector2(spriteScalX, 1.0f);
-        transform.GetChild(0).localScale = originalChildScale;
-        transform.GetChild(1).localScale = originalChildScale;
-        transform.GetChild(2).localScale = originalChildScale;
+                ChargeTime += Time.deltaTime;
+                time++;
+                Vector3 rand = new Vector3(transform.position.x + Random.Range(-10, 10), transform.position.y + Random.Range(-10, 10), 0);
+                if (time % 8 == 0)
+                {
+                    audioSource.PlayOneShot(audioClip);
+                    GameObject particle_;
+                    particle_ = Instantiate(particle, rand, Quaternion.identity);
+                    particle_.transform.parent = transform.parent;
+                }
+            }
+            if ((ChargeTime > KChargeTime) && HP < MaxHP)
+            {
+                HP += 1;
+                ChargeTime = 0.0f;
+            }
+            ShootColltime -= Time.deltaTime;
+
+            float spriteScalX = (HP / 10);
+
+            spriteRenderer.transform.localScale = new Vector3(spriteScalX, 1.0f, 0);
+            //transform.GetChild(0).localScale = originalChildScale;
+            //transform.GetChild(1).localScale = originalChildScale;
+            //transform.GetChild(2).localScale = originalChildScale;
+        }
+
+        hpText.transform.position = Camera.main.WorldToScreenPoint(transform.position + new Vector3(0.2f, -0.8f, 0f));
+        hpText.text = HP.ToString("F0") + "/" + MaxHP.ToString("F0"); // 小数点以下1桁まで表示
+        HPsprite.transform.position = (transform.position + new Vector3(-1.5f, -1.0f, 0f));
+        Zandansprite.transform.position = (transform.position + new Vector3(1.5f, -0.8f, 0f));
 
     }
     private void OnTriggerEnter2D(Collider2D collision)
@@ -77,13 +129,35 @@ public class PlayerScript : MonoBehaviour
         {
             MaxHP -= 1;
             HP -= 1;
+            damagedtime = 0.2f;
             Destroy(collision.gameObject);
         }
         if (collision.CompareTag("Enemy"))
         {
             MaxHP -= 2;
             HP -= 2;
+            damagedtime = 0.2f;
             Destroy(collision.gameObject);
         }
+        if (collision.CompareTag("zandan"))
+        {
+            MaxHP += 1;
+            Destroy(collision.gameObject);
+
+        }
+    }
+    private bool InCamera()
+    {
+        // オブジェクトの位置をViewport座標に変換
+        Vector3 viewportPosition = mainCamera.WorldToViewportPoint(transform.position);
+
+        // Viewport座標がカメラの範囲内かどうかを判定
+        bool isInCamera = viewportPosition.x >= 0f && viewportPosition.x <= 1f &&
+                         viewportPosition.y >= 0f && viewportPosition.y <= 0.95f &&
+                         viewportPosition.z > 0f;
+
+
+
+        return isInCamera;
     }
 }

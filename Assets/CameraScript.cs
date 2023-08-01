@@ -33,7 +33,11 @@ public class CameraScript : MonoBehaviour
         if (breaktile == null)
         {
             kowase.gameObject.SetActive(false);
-            transform.position += new Vector3(0, 1, 0) * Time.deltaTime;
+            if (transform.position.y < 190)
+            {
+                transform.position += new Vector3(0, 2, 0) * Time.deltaTime;
+
+            }
 
             if (transform.position.y > 30)
             {

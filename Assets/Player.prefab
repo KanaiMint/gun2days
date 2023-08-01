@@ -332,6 +332,7 @@ MonoBehaviour:
   cameraScript: {fileID: 0}
   audioSource: {fileID: 3374109078136225067}
   audioClip: {fileID: 8300000, guid: 3a2cd512b08f5e3478b6c31e6e730b73, type: 3}
+  audioClip_damage: {fileID: 8300000, guid: 783ce208ab1eb46488731d0f443497fa, type: 3}
   rb: {fileID: 0}
   MoveSpeed: 5
   rightchargeScript: {fileID: 1897505542856147084}

@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 1845420638840605908}
   - component: {fileID: 6718239562433530994}
   - component: {fileID: -1600428700223668374}
-  - component: {fileID: 1586077583209008410}
+  - component: {fileID: 7927432507211410409}
   m_Layer: 0
   m_Name: Enemy_Particle
   m_TagString: Paticle
@@ -100,8 +100,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   vel: {x: 0.56525993, y: -0.047188282, z: 0}
   lifetime: 5
---- !u!70 &1586077583209008410
-CapsuleCollider2D:
+--- !u!61 &7927432507211410409
+BoxCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -114,5 +114,15 @@ CapsuleCollider2D:
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0.5, y: 0.5}
+    oldSize: {x: 0.32, y: 0.32}
+    newSize: {x: 0.32, y: 0.32}
+    adaptiveTilingThreshold: 0.5
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  serializedVersion: 2
   m_Size: {x: 0.32, y: 0.32}
-  m_Direction: 0
+  m_EdgeRadius: 0

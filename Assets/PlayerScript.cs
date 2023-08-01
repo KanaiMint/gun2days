@@ -26,6 +26,7 @@ public class PlayerScript : MonoBehaviour
     public CameraScript cameraScript;
     public AudioSource audioSource;
     public AudioClip audioClip;
+    public AudioClip audioClip_damage;
     private Camera mainCamera;
     public Rigidbody2D rb;
     float damagedtime = 0.0f;
@@ -144,6 +145,7 @@ public class PlayerScript : MonoBehaviour
             MaxHP -= 1;
             HP -= 1;
             damagedtime = 0.2f;
+            audioSource.PlayOneShot(audioClip_damage);
             Destroy(collision.gameObject);
         }
         if (collision.CompareTag("Enemy"))
@@ -151,6 +153,7 @@ public class PlayerScript : MonoBehaviour
             MaxHP -= 2;
             HP -= 2;
             damagedtime = 0.2f;
+            audioSource.PlayOneShot(audioClip_damage);
             Destroy(collision.gameObject);
         }
         if (collision.CompareTag("zandan"))

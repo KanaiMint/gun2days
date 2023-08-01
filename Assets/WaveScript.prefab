@@ -125,7 +125,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4f502fd11b1fb384fb12f1ab77a5a6c1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Movespeed: -3
+  Movespeed: -2
   particle: {fileID: 6857746815257354843, guid: 94d4761e26f77bb46ba2870938434cec, type: 3}
 --- !u!114 &7967658584048041696
 MonoBehaviour:
@@ -139,3 +139,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 16a4024ba0f3065439c21f6159ab12e7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  lifetime: 1
+  spriteRenderer: {fileID: 0}
+  newAlpha: 1

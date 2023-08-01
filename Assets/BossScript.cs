@@ -27,7 +27,7 @@ public class BossScript : MonoBehaviour
     public GameObject particle;
     public GameObject bullet;
         float DrainTime=0;
-        float KDrainTime=3.0f;
+        float KDrainTime=5.0f;
         bool isAttack;
     int time=0;
     
@@ -83,7 +83,7 @@ public class BossScript : MonoBehaviour
                 if (!isAttack)
                 {
                  transform.position = new Vector3(tmp.x,transform.position.y, 0);
-                 Rand = Random.Range(3, 4);
+                 Rand = Random.Range(0, 9);
                 }
                 AttackTime -= Time.deltaTime;
 
@@ -103,64 +103,71 @@ public class BossScript : MonoBehaviour
     {
         if (AttackTime <= 0)
         {
-            isAttack = true;
-            if (Rand == 0)
+            if (Rand == 0|| Rand == 1)
             {
+            isAttack = true;
                 GameObject Breakbox;
                 Breakbox = Instantiate(BreakBox, transform.position, Quaternion.identity);
                 Breakbox.transform.parent = transform.parent;
                 AttackTime = 1.5f;
             }
-            if (Rand == 1)
+            else if (Rand == 2|| Rand == 3)
             {
+            isAttack = true;
                 GameObject enemy;
                 enemy = Instantiate(Enemy, transform.position, Quaternion.identity);
                 enemy.transform.parent = transform.parent;
                 AttackTime = KAttackTime;
             }
-            if (Rand == 2)
+            else if (Rand == 4 || Rand == 5 || Rand == 6 || Rand == 7)
             {
+            isAttack = true;
                 GameObject Tile;
                 Tile=Instantiate(tile, transform.position,Quaternion.identity);
-                tile.transform.parent = transform.parent;
-                AttackTime = 0.5f;
+                Tile.transform.parent = transform.parent;
+                AttackTime = 1.5f;
 
             }
-            if(Rand == 3)
+            else if(Rand == 8 )
             {
+            isAttack = true;
                 DrainTime += Time.deltaTime;
                 if(DrainTime>=KDrainTime)
                 {
-                    while (BulletNum != 0)
-                    {
-                        if (time % 5 == 0)
+                   
+                        if (time % 10 == 0&&BulletNum>0)
                         {
                             GameObject bullet_;
                             bullet_ = Instantiate(bullet);
                             bullet_.transform.position = transform.position;
+                            bullet_.transform.position=new Vector2(transform.position.x + Random.Range(-0.5f, 0.5f), transform.position.y + 0.5f);
                             bullet_.transform.parent = transform.parent;
                             BulletNum--;
                         }
-                    }
+                    
                     if (BulletNum <= 0)
                     {
                         AttackTime = 2.0f;
                         DrainTime = 0.0f;
+                        Rand = -1;
+                        BulletNum = 0;
                     }
                 }
                 else
                 {
-                    Vector3 rand = new Vector3(transform.position.x + Random.Range(-10.0f,10.0f), transform.position.y + Random.Range(-15, -15), 0);
-                    if (time % 8 == 0)
+                    Vector3 rand = new Vector3(transform.position.x + Random.Range(-7.0f,7.0f), transform.position.y + Random.Range(-15, -15), 0);
+                    Vector3 randpos = new Vector3(transform.position.x + Random.Range(-0.1f,0.1f), transform.position.y + Random.Range(-0.1f,0.1f), 0);
+                    if (time % 5 == 0)
                     {
                         GameObject particle_;
                         particleScript particleScript_;
                         particle_ = Instantiate(particle, rand, Quaternion.identity);
                         particleScript_ = particle_.GetComponent<particleScript>();
-                        particleScript_.lifetime = 5.0f;
+                        particleScript_.lifetime = 3.0f;
                         particle_.transform.parent = transform.parent;
-                        Vector3 tmp = (transform.position - particle_.transform.position).normalized;
+                        Vector3 tmp = (transform.position - particle_.transform.position).normalized*1.0f;
                         particleScript_.vel = tmp;
+                        transform.position = randpos;
                     }
                 }
                     time++;
@@ -207,8 +214,8 @@ public class BossScript : MonoBehaviour
             Destroy(collision.gameObject);
         }
         if (collision.CompareTag("Paticle")){
-            BulletNum++;
-           // Destroy(collision.gameObject);
+           BulletNum+=1;
+           Destroy(collision.gameObject);
 
         }
     }

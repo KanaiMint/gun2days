@@ -6,7 +6,8 @@ public class TileScript : MonoBehaviour
 {
     public float Movespeed=-2.0f;
     public GameObject particle;
-    int time;
+    public float time=0;
+    int partime = 0;
     // Start is called before the first frame update
     void Start()
     {
@@ -16,17 +17,17 @@ public class TileScript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        transform.position += new Vector3(0, Movespeed, 0) * Time.deltaTime;
+        transform.position += new Vector3(0, -2.0f, 0) * Time.deltaTime;
         if (time >= 5.0f)
         {
             Destroy(gameObject);
         }
-
+        time += Time.deltaTime;
     }
     private void FixedUpdate()
     {
-        time++;
-        if (time %4 == 0)
+        partime++;
+        if (partime % 4 == 0)
         {
 
             GameObject par;

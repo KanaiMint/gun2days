@@ -151,6 +151,7 @@ MonoBehaviour:
   Enemy: {fileID: 8585233221790513343, guid: 3e142c54ca7a526499742f5130ef556a, type: 3}
   Xpos: 2
   HP: 30
+  AttackTime: 2
   Rand: 0
   spriteRenderer: {fileID: 8399374546151796591}
   cameraScript: {fileID: 0}
@@ -158,5 +159,5 @@ MonoBehaviour:
   BulletNum: 0
   player: {fileID: 6216014516249886065}
   tile: {fileID: 5054039164579785313, guid: 6326f8eb33d6ff64fbdb5f8f07935784, type: 3}
-  particle: {fileID: 6553540439063089647, guid: 026e30841a606534d90684c71b4d5ecd, type: 3}
+  particle: {fileID: 6553540439063089647, guid: f5e2099fc02026d4288fca170c9470e2, type: 3}
   bullet: {fileID: 2741197223345988940, guid: d3297a6604d7eda418911265919fa4b8, type: 3}

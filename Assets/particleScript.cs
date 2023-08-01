@@ -28,7 +28,7 @@ public class particleScript : MonoBehaviour
         }
         if (collision.CompareTag("Boss"))
         {
-            Destroy(gameObject);
+           // Destroy(gameObject);
         }
     }
 }

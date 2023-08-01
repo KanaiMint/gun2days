@@ -30,6 +30,8 @@ public class PlayerScript : MonoBehaviour
     public Rigidbody2D rb;
     float damagedtime = 0.0f;
     public float MoveSpeed;
+    public RightCanChargeScript rightchargeScript;
+    public LeftCanChargeScript leftchargeScript;
     // Start is called before the first frame update
     void Start()
     {
@@ -57,26 +59,7 @@ public class PlayerScript : MonoBehaviour
             }
             else { spriteRenderer.color = Color.white; }
 
-            if (Input.GetKey(KeyCode.A))
-            {
-                transform.position += new Vector3(-MoveSpeed, 0, 0) * Time.deltaTime;
-                //rb.velocity += new Vector2(-5, 0) * Time.deltaTime;
-            }
-            if (Input.GetKey(KeyCode.D))
-            {
-                transform.position += new Vector3(MoveSpeed, 0, 0) * Time.deltaTime;
-                //rb.velocity += new Vector2(5, 0) * Time.deltaTime;
-            }
-            if (Input.GetKey(KeyCode.W))
-            {
-                transform.position += new Vector3(0, MoveSpeed, 0) * Time.deltaTime;
-                //rb.velocity += new Vector2(0, 5) * Time.deltaTime;
-            }
-            if (Input.GetKey(KeyCode.S))
-            {
-                transform.position += new Vector3(0, -MoveSpeed, 0) * Time.deltaTime;
-                //rb.velocity +=new Vector2(0, -5) * Time.deltaTime;
-            }
+           
             if (Input.GetKey(KeyCode.J) && ShootColltime <= 0.0f && HP > 1)
             {
                 HP -= 1;
@@ -88,9 +71,9 @@ public class PlayerScript : MonoBehaviour
                 audioSource.Play();
             }
             else
-            if (Input.GetKey(KeyCode.K) && !Input.GetKey(KeyCode.J))
+            if (Input.GetKey(KeyCode.K) && !Input.GetKey(KeyCode.J)&& !(rightchargeScript.isWallIN&&leftchargeScript.isWallIN))
             {
-
+                MoveSpeed = 2.5f;
                 ChargeTime += Time.deltaTime;
                 time++;
                 Vector3 rand = new Vector3(transform.position.x + Random.Range(-10, 10), transform.position.y + Random.Range(-10, 10), 0);
@@ -102,6 +85,7 @@ public class PlayerScript : MonoBehaviour
                     particle_.transform.parent = transform.parent;
                 }
             }
+            else { MoveSpeed = 5.0f; }
             if ((ChargeTime > KChargeTime) && HP < MaxHP)
             {
                 HP += 1;
@@ -123,6 +107,35 @@ public class PlayerScript : MonoBehaviour
         Zandansprite.transform.position = (transform.position + new Vector3(1.5f, -0.8f, 0f));
 
     }
+
+    private void FixedUpdate()
+    {
+        Move();
+    }
+    private void Move()
+    {
+        if (Input.GetKey(KeyCode.A))
+        {
+            transform.position += new Vector3(-MoveSpeed, 0, 0) * Time.deltaTime;
+            //rb.velocity += new Vector2(-5, 0) * Time.deltaTime;
+        }
+        if (Input.GetKey(KeyCode.D))
+        {
+            transform.position += new Vector3(MoveSpeed, 0, 0) * Time.deltaTime;
+            //rb.velocity += new Vector2(5, 0) * Time.deltaTime;
+        }
+        if (Input.GetKey(KeyCode.W))
+        {
+            transform.position += new Vector3(0, MoveSpeed, 0) * Time.deltaTime;
+            //rb.velocity += new Vector2(0, 5) * Time.deltaTime;
+        }
+        if (Input.GetKey(KeyCode.S))
+        {
+            transform.position += new Vector3(0, -MoveSpeed, 0) * Time.deltaTime;
+            //rb.velocity +=new Vector2(0, -5) * Time.deltaTime;
+        }
+    }
+
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.CompareTag("EnemyBullet"))

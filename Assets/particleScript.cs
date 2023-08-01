@@ -20,5 +20,15 @@ public class particleScript : MonoBehaviour
         lifetime-=Time.deltaTime;
         if (lifetime < 0.0f) { Destroy(gameObject); };
     }
-   
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.CompareTag("Player"))
+        {
+            Destroy(gameObject);
+        }
+        if (collision.CompareTag("Boss"))
+        {
+            Destroy(gameObject);
+        }
+    }
 }

@@ -12,7 +12,7 @@ public class BossScript : MonoBehaviour
     public GameObject Enemy;
     public float Xpos=2.0f;
     bool Isreturn = false;
-    int HP=20;
+   public int HP=20;
     const int MaxHP = 20;
     const float KAttackTime = 7.0f;
     float AttackTime = 2.0f;
@@ -21,6 +21,14 @@ public class BossScript : MonoBehaviour
     float damagedtime = 0.0f;
     public CameraScript cameraScript;
     public Slider BosHpBar;
+    public int BulletNum= 0;
+    public GameObject player;
+   
+        float DrainTime;
+        float KDrainTime;
+        bool isAttack;
+ 
+    
     // Start is called before the first frame update
     void Start()
     {
@@ -28,6 +36,7 @@ public class BossScript : MonoBehaviour
         BosHpBar.value = 1;
         HP = MaxHP;
         BosHpBar.gameObject.SetActive(false);
+     
     }
 
     // Update is called once per frame
@@ -52,41 +61,29 @@ public class BossScript : MonoBehaviour
             {
                 BosHpBar.gameObject.SetActive(true);
                 transform.position += new Vector3(0, 1, 0) * Time.deltaTime;
-                if (Isreturn)
+                //if (Isreturn)
+                //{
+                //    transform.position += new Vector3(Xpos, 0, 0) * Time.deltaTime;
+                //    if (transform.position.x > 7.0f)
+                //    {
+                //        Isreturn = false;
+                //    }
+                //}
+                //if (!Isreturn)
+                //{
+                //    transform.position += new Vector3(-Xpos, 0, 0) * Time.deltaTime;
+                //    if (transform.position.x < -7.0f)
+                //    {
+                //        Isreturn = true;
+                //    }
+                //}
+                Vector2 tmp = (Vector2.MoveTowards(transform.position, player.transform.position, Time.deltaTime*40.0f));
+                if (!isAttack)
                 {
-                    transform.position += new Vector3(Xpos, 0, 0) * Time.deltaTime;
-                    if (transform.position.x > 7.0f)
-                    {
-                        Isreturn = false;
-                    }
-                }
-                if (!Isreturn)
-                {
-                    transform.position += new Vector3(-Xpos, 0, 0) * Time.deltaTime;
-                    if (transform.position.x < -7.0f)
-                    {
-                        Isreturn = true;
-                    }
+                 transform.position = new Vector3(tmp.x,transform.position.y, 0);
                 }
                 Rand = Random.Range(0, 2);
-                if (AttackTime <= 0)
-                {
-
-                    if (Rand == 0)
-                    {
-                        GameObject Breakbox;
-                        Breakbox = Instantiate(BreakBox, transform.position, Quaternion.identity);
-                        Breakbox.transform.parent = transform.parent;
-                        AttackTime = 0.5f;
-                    }
-                    if (Rand == 1)
-                    {
-                        GameObject enemy;
-                        enemy = Instantiate(Enemy, transform.position, Quaternion.identity);
-                        enemy.transform.parent = transform.parent;
-                        AttackTime = KAttackTime;
-                    }
-                }
+                AttckMove();
                 AttackTime -= Time.deltaTime;
 
             }
@@ -94,6 +91,36 @@ public class BossScript : MonoBehaviour
             {
                 gameObject.SetActive(false);
             }
+        }
+    }
+
+    private void AttckMove()
+    {
+        if (AttackTime <= 0)
+        {
+            isAttack = true;
+            if (Rand == 0)
+            {
+                GameObject Breakbox;
+                Breakbox = Instantiate(BreakBox, transform.position, Quaternion.identity);
+                Breakbox.transform.parent = transform.parent;
+                AttackTime = 1.5f;
+            }
+            if (Rand == 1)
+            {
+                //GameObject enemy;
+                //enemy = Instantiate(Enemy, transform.position, Quaternion.identity);
+                //enemy.transform.parent = transform.parent;
+                //AttackTime = KAttackTime;
+            }
+            if (Rand == 2)
+            {
+                
+            }
+        }
+        else
+        {
+            isAttack = false;
         }
     }
 
@@ -130,6 +157,11 @@ public class BossScript : MonoBehaviour
             HP -= 1;
             damagedtime = 0.2f;
             Destroy(collision.gameObject);
+        }
+        if (collision.CompareTag("Paticle")){
+            BulletNum++;
+           // Destroy(collision.gameObject);
+
         }
     }
     

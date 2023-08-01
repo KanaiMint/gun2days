@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Audio;
 using UnityEngine.SceneManagement;
 
 public class CameraScript : MonoBehaviour
@@ -14,6 +15,8 @@ public class CameraScript : MonoBehaviour
    public bool IsGameClear = false;
     public TextMeshProUGUI GameCleartex;
     public TextMeshProUGUI GameOvertex;
+
+   
     // Start is called before the first frame update
     void Start()
     {
@@ -26,6 +29,7 @@ public class CameraScript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+      
         if (breaktile == null)
         {
             kowase.gameObject.SetActive(false);

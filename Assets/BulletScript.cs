@@ -19,10 +19,7 @@ public class BulletScript : MonoBehaviour
     {
         transform.position += new Vector3(0, 7, 0)*Time.deltaTime;
         lifetime -= Time.deltaTime;
-        if(lifetime < 0)
-        {
-            Destroy(gameObject);
-        }
+       
         if (!InCamera())
         {
             Destroy(gameObject);

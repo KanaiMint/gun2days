@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 6103784227016887118}
   m_Layer: 0
   m_Name: BossPrefab
-  m_TagString: Untagged
+  m_TagString: Boss
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -150,5 +150,10 @@ MonoBehaviour:
   BreakBox: {fileID: 2064534017608700152, guid: bdec3254d15d0504daf7d826eb1449dd, type: 3}
   Enemy: {fileID: 8585233221790513343, guid: 3e142c54ca7a526499742f5130ef556a, type: 3}
   Xpos: 2
+  HP: 20
   Rand: 0
   spriteRenderer: {fileID: 8399374546151796591}
+  cameraScript: {fileID: 0}
+  BosHpBar: {fileID: 0}
+  BulletNum: 0
+  player: {fileID: 6216014516249886065}

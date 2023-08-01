@@ -87,7 +87,7 @@ public class EnemyScript : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.CompareTag("bullet") && isInCamera)
+        if (collision.CompareTag("bullet"))
         {
             HP -= 1;
             Destroy(collision.gameObject);

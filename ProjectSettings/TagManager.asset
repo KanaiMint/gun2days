@@ -8,6 +8,9 @@ TagManager:
   - Enemy
   - EnemyBullet
   - zandan
+  - Tile
+  - Paticle
+  - Boss
   layers:
   - Default
   - TransparentFX

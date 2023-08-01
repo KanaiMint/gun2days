@@ -15,7 +15,7 @@ public class BossScript : MonoBehaviour
    public int HP=20;
     const int MaxHP = 20;
     const float KAttackTime = 7.0f;
-    float AttackTime = 2.0f;
+   public float AttackTime = 2.0f;
     public int Rand;
     public SpriteRenderer spriteRenderer;
     float damagedtime = 0.0f;
@@ -23,11 +23,13 @@ public class BossScript : MonoBehaviour
     public Slider BosHpBar;
     public int BulletNum= 0;
     public GameObject player;
-   
-        float DrainTime;
-        float KDrainTime;
+    public GameObject tile;
+    public GameObject particle;
+    public GameObject bullet;
+        float DrainTime=0;
+        float KDrainTime=3.0f;
         bool isAttack;
- 
+    int time=0;
     
     // Start is called before the first frame update
     void Start()
@@ -81,9 +83,8 @@ public class BossScript : MonoBehaviour
                 if (!isAttack)
                 {
                  transform.position = new Vector3(tmp.x,transform.position.y, 0);
+                 Rand = Random.Range(3, 4);
                 }
-                Rand = Random.Range(0, 2);
-                AttckMove();
                 AttackTime -= Time.deltaTime;
 
             }
@@ -93,7 +94,11 @@ public class BossScript : MonoBehaviour
             }
         }
     }
+    private void FixedUpdate()
+    {
+                AttckMove();
 
+    }
     private void AttckMove()
     {
         if (AttackTime <= 0)
@@ -108,14 +113,57 @@ public class BossScript : MonoBehaviour
             }
             if (Rand == 1)
             {
-                //GameObject enemy;
-                //enemy = Instantiate(Enemy, transform.position, Quaternion.identity);
-                //enemy.transform.parent = transform.parent;
-                //AttackTime = KAttackTime;
+                GameObject enemy;
+                enemy = Instantiate(Enemy, transform.position, Quaternion.identity);
+                enemy.transform.parent = transform.parent;
+                AttackTime = KAttackTime;
             }
             if (Rand == 2)
             {
-                
+                GameObject Tile;
+                Tile=Instantiate(tile, transform.position,Quaternion.identity);
+                tile.transform.parent = transform.parent;
+                AttackTime = 0.5f;
+
+            }
+            if(Rand == 3)
+            {
+                DrainTime += Time.deltaTime;
+                if(DrainTime>=KDrainTime)
+                {
+                    while (BulletNum != 0)
+                    {
+                        if (time % 5 == 0)
+                        {
+                            GameObject bullet_;
+                            bullet_ = Instantiate(bullet);
+                            bullet_.transform.position = transform.position;
+                            bullet_.transform.parent = transform.parent;
+                            BulletNum--;
+                        }
+                    }
+                    if (BulletNum <= 0)
+                    {
+                        AttackTime = 2.0f;
+                        DrainTime = 0.0f;
+                    }
+                }
+                else
+                {
+                    Vector3 rand = new Vector3(transform.position.x + Random.Range(-10.0f,10.0f), transform.position.y + Random.Range(-15, -15), 0);
+                    if (time % 8 == 0)
+                    {
+                        GameObject particle_;
+                        particleScript particleScript_;
+                        particle_ = Instantiate(particle, rand, Quaternion.identity);
+                        particleScript_ = particle_.GetComponent<particleScript>();
+                        particleScript_.lifetime = 5.0f;
+                        particle_.transform.parent = transform.parent;
+                        Vector3 tmp = (transform.position - particle_.transform.position).normalized;
+                        particleScript_.vel = tmp;
+                    }
+                }
+                    time++;
             }
         }
         else

@@ -6,7 +6,7 @@ using UnityEngine.UIElements;
 public class particleScript : MonoBehaviour
 {
    public Vector3 vel;
-   public float lifetime=0.5f;
+   public float lifetime=5.0f;
     // Start is called before the first frame update
     void Start()
     {

@@ -46,18 +46,18 @@ public class EnemyScript : MonoBehaviour
             }
             else { spriteRenderer.color = Color.white; }
 
-            if (HP <= 0)
-            {
-                Destroy(gameObject);
-
-
-            }
+            
             
             transform.position += new Vector3(0, 1, 0) * Time.deltaTime;
         }
 
         isInCamera = InCamera();
+        if (HP <= 0)
+        {
+            Destroy(gameObject);
 
+
+        }
     }
 
     private bool InCamera()

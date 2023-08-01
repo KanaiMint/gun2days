@@ -17,7 +17,7 @@ public class BulletScript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        transform.position += new Vector3(0, 7, 0)*Time.deltaTime;
+        transform.position += new Vector3(0, 10, 0)*Time.deltaTime;
         lifetime -= Time.deltaTime;
        
         if (!InCamera())
@@ -28,7 +28,10 @@ public class BulletScript : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-       
+        if (collision.CompareTag("Tile"))
+        {
+            Destroy(gameObject );
+        }
     }
 
     private bool InCamera()

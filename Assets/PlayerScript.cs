@@ -15,7 +15,7 @@ public class PlayerScript : MonoBehaviour
     const float KShootColltime = 0.3f;
     public SpriteRenderer spriteRenderer;
     float ChargeTime = 0.0f;
-    const float KChargeTime = 0.3f;
+    const float KChargeTime = 0.2f;
     private Vector3 originalChildScale;
 
     public TextMeshProUGUI hpText;
@@ -79,11 +79,12 @@ public class PlayerScript : MonoBehaviour
                 Vector3 rand = new Vector3(transform.position.x + Random.Range(-10, 10), transform.position.y + Random.Range(-10, 10), 0);
                 if (time % 8 == 0)
                 {
-                    audioSource.PlayOneShot(audioClip);
                     GameObject particle_;
                     particle_ = Instantiate(particle, rand, Quaternion.identity);
                     particle_.transform.parent = transform.parent;
                 }
+                    
+                if(time%100==0) { audioSource.PlayOneShot(audioClip); }
             }
             else { MoveSpeed = 5.0f; }
             if ((ChargeTime > KChargeTime) && HP < MaxHP)
